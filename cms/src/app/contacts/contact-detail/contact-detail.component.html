@@ -2,22 +2,26 @@
   <div class="panel-heading">
     <div class="row">
       <div class="col-xs-12">
-        <h4>Name</h4>
+        <h4>{{ contact.name }}</h4>
       </div>
     </div>
     <div class="row">
       <div class="col-xs-9">
-        <img src="" alt="photo">
+        <img [src]="contact.imageUrl" alt="photo">
       </div>
       <div class="col-xs-3">
-        <a href="#" class="btn btn-primary" style="margin-right: .5rem;">Edit</a> 
-        <a href="#" class="btn btn-danger">Delete</a>
+        <a href="#" class="btn btn-primary" style="margin-right: .5rem;">
+          Edit
+        </a> 
+        <a href="#" class="btn btn-danger">
+          Delete
+        </a>
       </div>
     </div>
   </div>
   <div class="panel-body">
-    <label for="email">Email: </label>
+    <label for="email">Email: {{ contact.email }}</label>
     <br>
-    <label for="phone">Phone: </label>
+    <label for="phone">Phone: {{ contact.phone }}</label>
   </div>
 </div>
