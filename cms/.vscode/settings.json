@@ -3,5 +3,10 @@
     "Barzee",
     "barzeer",
     "jacksonk"
+  ],
+  "cSpell.ignoreWords": [
+    "mockcontacts",
+    "mockdocuments",
+    "mockmessages"
   ]
 }
