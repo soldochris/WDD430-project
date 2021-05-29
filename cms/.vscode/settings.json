@@ -8,5 +8,11 @@
     "mockcontacts",
     "mockdocuments",
     "mockmessages"
-  ]
+  ],
+  "workbench.colorCustomizations": {
+    "activityBar.background": "#581512",
+    "titleBar.activeBackground": "#7B1E19",
+    "titleBar.activeForeground": "#FEFBFB"
+  },
+  "angular.enable-strict-mode-prompt": false
 }

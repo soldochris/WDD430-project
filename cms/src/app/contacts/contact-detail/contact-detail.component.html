@@ -7,21 +7,24 @@
     </div>
     <div class="row">
       <div class="col-xs-9">
-        <img [src]="contact.imageUrl" alt="photo">
+        <img [src]="contact.imageUrl" alt="photo" />
       </div>
       <div class="col-xs-3">
-        <a href="#" class="btn btn-primary" style="margin-right: .5rem;">
+        <a
+          href="#"
+          class="btn btn-primary"
+          style="margin-right: 0.5rem"
+          [routerLink]="['/contacts', contact?.id, 'edit']"
+        >
           Edit
-        </a> 
-        <a href="#" class="btn btn-danger">
-          Delete
         </a>
+        <a class="btn btn-danger" (click)="onDelete()"> Delete </a>
       </div>
     </div>
   </div>
   <div class="panel-body">
     <label for="email">Email: {{ contact.email }}</label>
-    <br>
+    <br />
     <label for="phone">Phone: {{ contact.phone }}</label>
   </div>
 </div>
