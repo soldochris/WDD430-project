@@ -18,18 +18,18 @@ export class MessageService {
     return this.messages.slice();
   }
 
-  initMessages(){
+  initMessages(): void {
     this
     .http
-    .get('https://cms-ng-default-rtdb.firebaseio.com/messages.json')
+    .get<{message: string, messages: Message[]}>('http://localhost:3000/messages')
     .subscribe((response: any) => {
-      this.messages = response;
+      this.messages = response.messages;
       this.maxMessageId = this.getMaxId();
       this.messages.sort(
-        (l: Message, r: Message)=> {
-          if (l.id < r.id) {
+        (lhs: Message, rhs: Message)=>{
+          if (lhs.id < rhs.id) {
             return -1;
-          } else if (l.id === r.id) {
+          } else if (lhs.id === rhs.id) {
             return 0;
           } else {
             return 1;
@@ -42,18 +42,48 @@ export class MessageService {
     });
   }
   
-  getMessage(id: string){
-    this.messages.forEach((message) => {
-      if(message.id == id){
+  getMessage(id: string): Message {
+    if (!this.messages) {
+      return null;
+    }
+
+    for (let message of this.messages) {
+      if (message.id === id) {
         return message;
       }
-    });
+    }
+
     return null;
   }
 
-  addMessage(message: Message){
-    this.messages.push(message);
-    this.storeMessages();
+  addMessage(message: Message): void {
+    if (!message) {
+      return;
+    }
+
+    const headers = new HttpHeaders({
+      'Content-Type': 'application/json'
+    });
+
+    message.id = '';
+
+    this.http
+    .post<{message: string, newMessage: Message}>('http://localhost:3000/messages', message, {headers: headers})
+    .subscribe((response: any) => {
+      this.messages.push(response.newMessage);
+      this.messages.sort(
+        (lhs: Message, rhs: Message)=>{
+          if (lhs.id < rhs.id) {
+            return -1;
+          } else if (lhs.id === rhs.id) {
+            return 0;
+          } else {
+            return 1;
+          }
+        }
+      );
+      this.messagesChangedEvent.next(this.messages.slice());
+    });
   }
 
   getMaxId(): number {
@@ -67,16 +97,17 @@ export class MessageService {
     return maxID;
   }
 
-  storeMessages(){
+  storeMessages(): void {
     let json = JSON.stringify(this.messages);
     let header = new HttpHeaders();
     header.set('Content-Type', 'application/json');
     this
     .http
-    .put<{message: string}>('https://cms-ng-default-rtdb.firebaseio.com/messages.json', json, {
+    .put<{message: string}>('http://localhost:3000/messages', json, {
       headers: header
     }).subscribe(() => {
       this.messagesChangedEvent.next(this.messages.slice());
     });
   }
+
 }

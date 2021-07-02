@@ -27,20 +27,20 @@ export class ContactEditComponent implements OnInit {
       this.editMode = false;
       let id = params['id'];
       if (id === null || id === undefined) {
-        this.editMode = false;
+        return;
+      }
+      
+      let contact = this.contactService.getContact(id);
+      if (!contact) {
         return;
       }
 
-      let originalContact = this.contactService.getContact(id)
-      if (originalContact === null || originalContact === undefined) {
-        return;
-      }
-
+      this.originalContact = contact;
       this.editMode = true;
-      this.contact = JSON.parse(JSON.stringify(originalContact));
+      this.contact = JSON.parse(JSON.stringify(contact));
 
-      if (this.contact.group) {
-        this.groupContacts = this.contact.group.slice();
+      if (contact.group) {
+        this.groupContacts = contact.group.slice();
       }
     });
   }
@@ -54,7 +54,7 @@ export class ContactEditComponent implements OnInit {
       form.value.imageUrl,
       this.groupContacts
     );
-    if (this.editMode === true) {
+    if (this.editMode == true) {
       this.contactService.updateContact(this.originalContact, contact);
     } else {
       this.contactService.addContact(contact);
